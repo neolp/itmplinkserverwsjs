@@ -1,0 +1,28 @@
+{
+  "name": "itmplinkserverws",
+  "version": "2.0.0",
+  "description": "itmplinkserverws js implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neolp/itmplinkserverwsjs.git"
+  },
+  "keywords": [
+    "itmp",
+    "iot"
+  ],
+  "author": "Alexey Tsigulin",
+  "license": "MIT",
+  "dependencies": {
+    "cbor-sync": "^1.0.3",
+    "express": "^4.16.4",
+    "express-ws": "^4.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/neolp/itmplinkserverwsjs/issues"
+  },
+  "homepage": "https://github.com/neolp/itmplinkserverwsjs#readme"
+}
