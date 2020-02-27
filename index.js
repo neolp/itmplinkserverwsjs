@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const EventEmitter = require('events')
 const URL = require('url')
 const cbor = require('cbor-sync')
@@ -8,7 +9,7 @@ class ITMPWsServerLink extends EventEmitter {
     this.ws = ws
     this.name = name
     this.ready = true
-    const that = this
+    //const that = this
     this.ws.on('error', (err) => {
       console.log('Error: ', err.message)
       //that.emit('error', error)
@@ -51,6 +52,7 @@ class ITMPWsServerLink extends EventEmitter {
       try {
         this.ws.ping(() => { })
       } catch (er) {
+        console.error(er)
       }
     }, 30000)
 
@@ -101,7 +103,7 @@ class ITMPWsServer extends EventEmitter {
     if (opts && opts.expressapp) {
       this.app = opts.expressapp
     } else {
-      const that = this
+      //const that = this
       const express = require('express')
       const expressws = require('express-ws')
       this.app = express()
