@@ -22,7 +22,15 @@ class ITMPWsServerLink extends EventEmitter {
 
     this.ws.on('message', (message) => {
       let msg
-      if (typeof message === 'string') { msg = JSON.parse(message) } else { msg = cbor.decode(message) }
+      if (typeof message === 'string') {
+        try {
+          msg = JSON.parse(message)
+        } catch (err) {
+          return // skip wrong message
+        }
+      } else {
+        msg = cbor.decode(message)
+      }
       this.emit('message', msg)
     })
 
