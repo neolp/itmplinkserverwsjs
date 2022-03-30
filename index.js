@@ -4,9 +4,10 @@ const URL = require('url')
 const cbor = require('cbor-sync')
 
 class ITMPWsServerLink extends EventEmitter {
-  constructor(name, ws) {
+  constructor(name, ws, opts) {
     super()
     this.ws = ws
+    this.opts = opts
     this.name = name
     this.ready = true
     //const that = this
@@ -73,12 +74,17 @@ class ITMPWsServerLink extends EventEmitter {
     return new Promise((resolve, reject) => {
       if (this.ready) {
         try {
-          //this.ws.send(JSON.stringify(binmsg))
+          if (this.opts && this.opts.json) {
+            this.ws.send(JSON.stringify(binmsg), () => {
+              resolve()
+            })
+          } else {
           //  console.log(binmsg)
-          let cmsg = cbor.encode(binmsg)
-          this.ws.send(cmsg, () => {
-            resolve()
-          })
+            let cmsg = cbor.encode(binmsg)
+            this.ws.send(cmsg, () => {
+              resolve()
+            })
+          }
           //this.sendlevel = this.ws._sender.queue.length
           //this.sendamount = this.ws._sender.bufferedBytes
           //console.log(123456)
@@ -126,9 +132,9 @@ class ITMPWsServer extends EventEmitter {
     this.app.ws(path, (ws, req) => {
       let link
       if (req.connection.remoteFamily === 'IPv6') {
-        link = new ITMPWsServerLink(`ws:[${req.connection.remoteAddress}]:${req.connection.remotePort}`, ws)
+        link = new ITMPWsServerLink(`ws:[${req.connection.remoteAddress}]:${req.connection.remotePort}`, ws, opts)
       } else {
-        link = new ITMPWsServerLink(`ws:${req.connection.remoteAddress}:${req.connection.remotePort}`, ws)
+        link = new ITMPWsServerLink(`ws:${req.connection.remoteAddress}:${req.connection.remotePort}`, ws , opts)
       }
       callback(link)
       //console.log(`connected ws:[${req.connection.remoteAddress}]:${req.connection.remotePort}`)
